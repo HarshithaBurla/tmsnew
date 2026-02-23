@@ -1,0 +1,185 @@
+/* General Styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Century Gothic', sans-serif;
+}
+
+body {
+  font-family: Verdana, sans-serif;
+  margin: 0;
+}
+
+/* Header and Navigation */
+.navbar {
+  overflow: visible;
+  position: fixed;
+  background-color: rgba(135, 206, 250, 0.4);
+  top: 0;
+  width: 100%;
+  height: 8vh;
+  z-index: 1000;
+}
+
+.logo a img {
+  position: relative;
+  float: left;
+  top: -20px;
+  margin-left: 10%;
+  margin-right: 35px;
+  -webkit-animation: spin 4s linear infinite;
+  -moz-animation: spin 4s linear infinite;
+  animation: spin 4s linear infinite;
+}
+
+.search-container {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.search-container input[type=text] {
+  padding: 6px;
+  font-size: 15px;
+  border-radius: 15px;
+  border: 1px solid #0000ff;
+}
+
+.search-container button {
+  padding: 4px;
+  border-radius: 10px;
+  border: 1px solid #00f;
+  background-color: #fff;
+  cursor: pointer;
+}
+
+.nav-links {
+  float: right;
+  list-style-type: none;
+  margin-top: 20px;
+  margin-right: 50px;
+}
+
+.nav-links li {
+  display: inline;
+}
+
+.nav-links li a {
+  text-decoration: none;
+  color: #fff;
+  padding: 5px 20px;
+  border: 1px solid transparent;
+  transition: 0.9s ease;
+}
+
+.nav-links li a:hover,
+.nav-links li.active a {
+  background-color: #fff;
+  color: #000;
+}
+
+/* Main Content */
+.content-wrapper {
+  margin-top: 8vh; /* Push content below navbar */
+}
+
+/* Slideshow */
+.slideshow-container {
+  max-width: 100%;
+  position: relative;
+  margin: auto;
+}
+
+.page-title {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #fff;
+    z-index: 10;
+    text-align: center;
+    width: 100%;
+}
+
+.page-title h1 {
+    font-size: 48px;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+}
+
+.mySlides img {
+  width: 100%;
+  height: auto;
+  vertical-align: middle;
+}
+
+.prev, .next {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  width: auto;
+  padding: 16px;
+  margin-top: -22px;
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+  transition: 0.6s ease;
+  border-radius: 0 3px 3px 0;
+  user-select: none;
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 10;
+}
+
+.next {
+  right: 0;
+  border-radius: 3px 0 0 3px;
+}
+
+.dots-container {
+  text-align: center;
+  position: absolute;
+  bottom: 20px;
+  width: 100%;
+  z-index: 10;
+}
+
+.dot {
+  cursor: pointer;
+  height: 15px;
+  width: 15px;
+  margin: 0 2px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+  transition: background-color 0.6s ease;
+}
+
+.active, .dot:hover {
+  background-color: #717171;
+}
+
+.fade {
+  -webkit-animation-name: fade;
+  -webkit-animation-duration: 1.5s;
+  animation-name: fade;
+  animation-duration: 1.5s;
+}
+
+@-webkit-keyframes fade {
+  from { opacity: .4 }
+  to { opacity: 1 }
+}
+
+@keyframes fade {
+  from { opacity: .4 }
+  to { opacity: 1 }
+}
+
+.container {
+  width: 90%;
+  margin: auto;
+}
+
+/* Animations */
+@keyframes spin {
+  100% { transform: rotate(360deg); }
+}

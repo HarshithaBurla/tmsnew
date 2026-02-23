@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Popular Destinations</title>
+
+<style>
+
+/* ===== BODY ===== */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    color: white;
+}
+
+/* ===== NAVBAR ===== */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 40px;
+    background: rgba(0,0,0,0.6);
+}
+
+.navbar ul {
+    list-style: none;
+    display: flex;
+    gap: 25px;
+    margin: 0;
+}
+
+.navbar a {
+    color: white;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.navbar a:hover,
+.active-menu {
+    color: #ffd700;
+}
+
+/* ===== HEADING ===== */
+.heading {
+    text-align: center;
+    margin: 30px 0;
+    font-size: 40px;
+}
+
+/* ===== GRID ===== */
+.container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+    padding: 40px;
+}
+
+/* ===== CARD ===== */
+.box {
+    position: relative;
+    overflow: hidden;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+    transition: transform 0.4s;
+}
+
+.box:hover {
+    transform: scale(1.05);
+}
+
+.imgBox img {
+    width: 100%;
+    height: 270px;
+    object-fit: cover;
+}
+
+/* ===== OVERLAY ===== */
+.name-text {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background: rgba(0,0,0,0.7);
+    text-align: center;
+    padding: 15px 0;
+}
+
+.name-text h1 {
+    margin: 0;
+    font-size: 22px;
+}
+
+.name-text input {
+    margin-top: 10px;
+    padding: 6px 20px;
+    border: none;
+    background: #ffd700;
+    color: black;
+    cursor: pointer;
+    border-radius: 20px;
+    transition: 0.3s;
+}
+
+.name-text input:hover {
+    background: white;
+}
+
+</style>
+</head>
+
+<body>
+
+<header class="navbar">
+    <a href="mainPage.html">
+        <img src="earth-globe.png" alt="Logo" style="width:36px;height:36px">
+    </a>
+
+    <ul>
+        <li><a href="mainPage.html">Home</a></li>
+        <li><a class="active-menu" href="destination.html">Destination</a></li>
+        <li><a href="gallery.html">Gallery</a></li>
+        <li><a href="feedback.html">Feedback</a></li>
+        <li><a href="index.html">Logout</a></li>
+    </ul>
+</header>
+
+<h1 class="heading">Popular Destinations</h1>
+
+<div class="container">
+
+<!-- Goa -->
+<div class="box">
+    <div class="imgBox">
+        <img src="images/destination/goa1.jpg" alt="Goa">
+    </div>
+    <div class="name-text">
+        <h1>Goa</h1>
+        <form method="POST" action="info.php">
+            <input type="submit" name="goa" value="Visit">
+        </form>
+    </div>
+</div>
+
+<!-- Kerala -->
+<div class="box">
+    <div class="imgBox">
+        <img src="images/destination/kerala1.jpg" alt="Kerala">
+    </div>
+    <div class="name-text">
+        <h1>Kerala</h1>
+        <form method="POST" action="info.php">
+            <input type="submit" name="kerala" value="Visit">
+        </form>
+    </div>
+</div>
+
+<!-- Mysore -->
+<div class="box">
+    <div class="imgBox">
+        <img src="images/destination/mysore1.jpg" alt="Mysore">
+    </div>
+    <div class="name-text">
+        <h1>Mysore</h1>
+        <form method="POST" action="info.php">
+            <input type="submit" name="mysore" value="Visit">
+        </form>
+    </div>
+</div>
+
+<!-- Ladakh -->
+<div class="box">
+    <div class="imgBox">
+        <img src="images/destination/ladakh1.jpg" alt="Ladakh">
+    </div>
+    <div class="name-text">
+        <h1>Ladakh</h1>
+        <form method="POST" action="info.php">
+            <input type="submit" name="ladakh" value="Visit">
+        </form>
+    </div>
+</div>
+
+<!-- Agra -->
+<div class="box">
+    <div class="imgBox">
+        <img src="images/destination/tajmahal1.jpg" alt="Agra">
+    </div>
+    <div class="name-text">
+        <h1>Agra</h1>
+        <form method="POST" action="info.php">
+            <input type="submit" name="agra" value="Visit">
+        </form>
+    </div>
+</div>
+
+<!-- India Gate -->
+<div class="box">
+    <div class="imgBox">
+        <img src="images/destination/india_gate1.jpg" alt="India Gate">
+    </div>
+    <div class="name-text">
+        <h1>India Gate</h1>
+        <form method="POST" action="info.php">
+            <input type="submit" name="india_gate" value="Visit">
+        </form>
+    </div>
+</div>
+
+<!-- Hampi -->
+<div class="box">
+    <div class="imgBox">
+        <img src="images/destination/hampi1.jpg" alt="Hampi">
+    </div>
+    <div class="name-text">
+        <h1>Hampi</h1>
+        <form method="POST" action="info.php">
+            <input type="submit" name="hampi" value="Visit">
+        </form>
+    </div>
+</div>
+
+<!-- Rajasthan -->
+<div class="box">
+    <div class="imgBox">
+        <img src="images/destination/rajasthan1.jpg" alt="Rajasthan">
+    </div>
+    <div class="name-text">
+        <h1>Rajasthan</h1>
+        <form method="POST" action="info.php">
+            <input type="submit" name="rajasthan" value="Visit">
+        </form>
+    </div>
+</div>
+
+<!-- Manali -->
+<div class="box">
+    <div class="imgBox">
+        <img src="images/destination/manali1.jpg" alt="Manali">
+    </div>
+    <div class="name-text">
+        <h1>Manali</h1>
+        <form method="POST" action="info.php">
+            <input type="submit" name="manali" value="Visit">
+        </form>
+    </div>
+</div>
+
+<!-- Srinagar -->
+<div class="box">
+    <div class="imgBox">
+        <img src="images/destination/srinagar1.jpg" alt="Srinagar">
+    </div>
+    <div class="name-text">
+        <h1>Srinagar</h1>
+        <form method="POST" action="info.php">
+            <input type="submit" name="srinagar" value="Visit">
+        </form>
+    </div>
+</div>
+
+<!-- Amritsar -->
+<div class="box">
+    <div class="imgBox">
+        <img src="images/destination/amritsar1.jpg" alt="Amritsar">
+    </div>
+    <div class="name-text">
+        <h1>Amritsar</h1>
+        <form method="POST" action="info.php">
+            <input type="submit" name="amritsar" value="Visit">
+        </form>
+    </div>
+</div>
+
+<!-- Jog Falls -->
+<div class="box">
+    <div class="imgBox">
+        <img src="images/destination/jogfalls1.jpg" alt="Jog Falls">
+    </div>
+    <div class="name-text">
+        <h1>Jog Falls</h1>
+        <form method="POST" action="info.php">
+            <input type="submit" name="jogfalls" value="Visit">
+        </form>
+    </div>
+</div>
+
+</div>
+
+</body>
+</html>

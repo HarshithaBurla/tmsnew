@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tour Booking</title>
+
+<style>
+
+/* ===== BACKGROUND ===== */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    color: white;
+}
+
+/* ===== NAVBAR ===== */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 40px;
+    background: rgba(0,0,0,0.6);
+}
+
+.navbar a {
+    color: white;
+    text-decoration: none;
+    margin-left: 20px;
+}
+
+/* ===== TITLE ===== */
+h1 {
+    text-align: center;
+    margin-top: 30px;
+}
+
+/* ===== FORM CARD ===== */
+.container {
+    width: 400px;
+    margin: 40px auto;
+    background: rgba(255,255,255,0.1);
+    padding: 30px;
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+}
+
+/* ===== INPUTS ===== */
+input, select {
+    width: 100%;
+    padding: 10px;
+    margin: 12px 0;
+    border: none;
+    border-radius: 8px;
+}
+
+/* ===== BUTTON ===== */
+button {
+    width: 100%;
+    padding: 12px;
+    background: #ffd700;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+button:hover {
+    background: white;
+}
+
+/* ===== ROUTE DISPLAY ===== */
+.route-box {
+    margin-top: 20px;
+    padding: 15px;
+    background: rgba(0,0,0,0.4);
+    border-radius: 10px;
+}
+
+</style>
+
+<script>
+function showRoute() {
+
+    var start = document.getElementById("start").value;
+    var dest = document.getElementById("dest").value;
+    var result = document.getElementById("routeResult");
+
+    var routes = {
+
+        "Delhi-Agra": [
+            "Mathura",
+            "Vrindavan",
+            "Fatehpur Sikri"
+        ],
+
+        "Mumbai-Goa": [
+            "Lonavala",
+            "Pune",
+            "Ratnagiri"
+        ],
+
+        "Bangalore-Mysore": [
+            "Ramanagara",
+            "Srirangapatna"
+        ]
+    };
+
+    var key = start + "-" + dest;
+
+    if(routes[key]){
+        result.innerHTML = "<b>Famous Places on the Route:</b><br>" + routes[key].join(" ➜ ");
+    } else {
+        result.innerHTML = "No predefined famous route available.";
+    }
+}
+</script>
+
+</head>
+
+<body>
+
+<div class="navbar">
+    <a href="mainPage.html">Home</a>
+    <a href="destination.html">Destination</a>
+</div>
+
+<h1>Tour Booking</h1>
+
+<div class="container">
+
+<form method="POST" action="booking.php">
+
+<input type="text" name="ffirst" placeholder="First Name" required>
+<input type="text" name="flast" placeholder="Last Name" required>
+<input type="email" name="femail" placeholder="Email" required>
+<input type="text" name="city" placeholder="City" required>
+<input type="text" name="fphone" placeholder="Phone" required>
+
+<label>Starting Point</label>
+<select id="start" required onchange="showRoute()">
+    <option value="">Select Start</option>
+    <option>Delhi</option>
+    <option>Mumbai</option>
+    <option>Bangalore</option>
+</select>
+
+<label>Destination</label>
+<select id="dest" name="fdesti" required onchange="showRoute()">
+    <option value="">Select Destination</option>
+    <option>Agra</option>
+    <option>Goa</option>
+    <option>Mysore</option>
+</select>
+
+<div class="route-box" id="routeResult"></div>
+
+<button type="submit" name="submit">Book Now</button>
+
+</form>
+
+</div>
+
+</body>
+</html>
