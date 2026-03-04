@@ -1,184 +1,308 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gallery</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Explore Destinations</title>
 
-    <link rel="stylesheet" href="css/style.css">
-
-    <style>
-        body {
+<style>
+body {
     margin: 0;
     font-family: Arial, sans-serif;
     background: linear-gradient(135deg, #dbeafe, #e0f2fe, #f0f9ff);
 }
 
-        .navbar {
-            background: #0d3b66;
-            padding: 15px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+.navbar {
+    background: #0d3b66;
+    padding: 15px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 
-        .navbar img {
-            height: 40px;
-        }
+.navbar h2 {
+    color: white;
+    margin: 0;
+}
 
-        .nav-links {
-            list-style: none;
-            display: flex;
-            gap: 20px;
-        }
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 25px;
+}
 
-        .nav-links a {
-            color: white;
-            text-decoration: none;
-            font-weight: 500;
-        }
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
 
-        .nav-links .active-menu a {
-            border-bottom: 2px solid #ffd166;
-        }
+.gallery-wrapper {
+    max-width: 1300px;
+    margin: 50px auto;
+    padding: 0 20px;
+}
 
-        .gallery-wrapper {
-            max-width: 1200px;
-            margin: 50px auto;
-            padding: 0 20px;
-        }
+.gallery-title h1 {
+    text-align: center;
+    font-size: 38px;
+    color: #0d3b66;
+    margin-bottom: 40px;
+}
 
-        .gallery-title {
-            text-align: center;
-            margin-bottom: 50px;
-        }
+.place-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+}
 
-        .gallery-title h1 {
-            font-size: 36px;
-            color: #0d3b66;
-        }
+.place-card {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    transition: 0.3s;
+}
 
-        .location-section {
-            margin-bottom: 70px;
-        }
+.place-card:hover {
+    transform: translateY(-8px);
+}
 
-        .location-section h2 {
-            margin-bottom: 25px;
-            color: #333;
-            border-left: 5px solid #0d3b66;
-            padding-left: 10px;
-        }
+.place-card img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+}
 
-        .image-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-        }
+.place-content {
+    padding: 20px;
+    text-align: center;
+}
 
-        .image-grid img {
-            width: 100%;
-            height: 250px;
-            object-fit: cover;
-            border-radius: 10px;
-            transition: 0.3s ease;
-        }
+.place-content h3 {
+    margin-bottom: 15px;
+    color: #0d3b66;
+}
 
-        .image-grid img:hover {
-            transform: scale(1.05);
-        }
-    </style>
+.button-group {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+}
+
+.explore-btn, .book-btn {
+    padding: 8px 16px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.explore-btn {
+    background: #00b4d8;
+    color: white;
+}
+
+.book-btn {
+    background: #ffd166;
+    color: #0d3b66;
+}
+
+.explore-btn:hover { background:#0096c7; }
+.book-btn:hover { background:#ffb703; }
+
+</style>
 </head>
 
 <body>
 
 <header class="navbar">
-    <div class="logo">
-        <a href="mainPage.html">
-            <img src="earth-globe.png" alt="Logo">
-        </a>
-    </div>
-
+    <h2>Travel Explorer</h2>
     <ul class="nav-links">
         <li><a href="mainPage.html">Home</a></li>
+        <li><a href="gallery.html">Gallery</a></li>
         <li><a href="destination.html">Destination</a></li>
-        <li class="active-menu"><a href="gallery.html">Gallery</a></li>
-        <li><a href="feedback.html">Feedback</a></li>
-        <li><a href="index.html">Logout</a></li>
     </ul>
 </header>
 
 <div class="gallery-wrapper">
 
-    <div class="gallery-title">
-        <h1>Travel Gallery</h1>
-    </div>
+<div class="gallery-title">
+    <h1>Explore Beautiful Destinations in India</h1>
+</div>
 
-    <!-- Goa -->
-    <div class="location-section" id="goa">
-        <h2>Goa</h2>
-        <div class="image-grid">
-            <img src="images/gallery/goa1.jpg">
-            <img src="images/gallery/goa2.jpg">
-            <img src="images/gallery/goa3.jpg">
-            <img src="images/gallery/goa4.jpg">
-        </div>
-    </div>
+<div class="place-grid">
 
-    <!-- Kerala -->
-    <div class="location-section" id="kerala">
-        <h2>Kerala</h2>
-        <div class="image-grid">
-            <img src="images/gallery/kerala1.jpg">
-            <img src="images/gallery/kerala2.jpg">
-            <img src="images/gallery/kerala3.jpg">
-            <img src="images/gallery/kerala4.jpg">
-        </div>
-    </div>
+<!-- NORTH INDIA -->
+<div class="place-card">
+<img src="images/destination/manali1.jpg">
+<div class="place-content">
+<h3>Manali</h3>
+<div class="button-group">
+<a href="destination.html?place=Manali" class="explore-btn">Explore</a>
+<a href="booking.html?place=Manali" class="book-btn">Book Tour</a>
+</div>
+</div>
+</div>
 
-    <!-- Ladakh -->
-    <div class="location-section" id="ladakh">
-        <h2>Ladakh</h2>
-        <div class="image-grid">
-            <img src="images/destination/ladakh1.jpg">
-            <img src="images/destination/ladakh2.jpg">
-            <img src="images/destination/ladakh3.jpg">
-            <img src="images/destination/ladakh4.jpg">
-        </div>
-    </div>
+<div class="place-card">
+<img src="images/destination/ladakh1.jpg">
+<div class="place-content">
+<h3>Ladakh</h3>
+<div class="button-group">
+<a href="destination.html?place=Ladakh" class="explore-btn">Explore</a>
+<a href="booking.html?place=Ladakh" class="book-btn">Book Tour</a>
+</div>
+</div>
+</div>
 
-    <!-- Agra -->
-    <div class="location-section" id="agra">
-        <h2>Agra</h2>
-        <div class="image-grid">
-            <img src="images/destination/tajmahal1.jpg">
-            <img src="images/destination/tajmahal2.jpg">
-            <img src="images/destination/tajmahal3.jpg">
-            <img src="images/destination/tajmahal4.jpg">
-        </div>
-    </div>
+<div class="place-card">
+<img src="images/destination/tajmahal1.jpg">
+<div class="place-content">
+<h3>Agra</h3>
+<div class="button-group">
+<a href="destination.html?place=Agra" class="explore-btn">Explore</a>
+<a href="booking.html?place=Agra" class="book-btn">Book Tour</a>
+</div>
+</div>
+</div>
 
-    <!-- Rajasthan -->
-    <div class="location-section" id="rajasthan">
-        <h2>Rajasthan</h2>
-        <div class="image-grid">
-            <img src="images/destination/rajasthan1.jpg">
-            <img src="images/destination/rajasthan2.jpg">
-            <img src="images/destination/rajasthan3.jpg">
-            <img src="images/destination/rajasthan4.jpg">
-        </div>
-    </div>
+<div class="place-card">
+<img src="images/destination/rajasthan1.jpg">
+<div class="place-content">
+<h3>Jaipur</h3>
+<div class="button-group">
+<a href="destination.html?place=Jaipur" class="explore-btn">Explore</a>
+<a href="booking.html?place=Jaipur" class="book-btn">Book Tour</a>
+</div>
+</div>
+</div>
 
-    <!-- Manali -->
-    <div class="location-section" id="manali">
-        <h2>Manali</h2>
-        <div class="image-grid">
-            <img src="images/destination/manali1.jpg">
-            <img src="images/destination/manali2.jpg">
-            <img src="images/destination/manali3.jpg">
-            <img src="images/destination/manali4.jpg">
-        </div>
-    </div>
+<div class="place-card">
+<img src="images/destination/varanasi.jpg">
+<div class="place-content">
+<h3>Varanasi</h3>
+<div class="button-group">
+<a href="destination.html?place=Varanasi" class="explore-btn">Explore</a>
+<a href="booking.html?place=Varanasi" class="book-btn">Book Tour</a>
+</div>
+</div>
+</div>
 
+<!-- SOUTH INDIA -->
+<div class="place-card">
+<img src="images/gallery/kerala1.jpg">
+<div class="place-content">
+<h3>Kerala</h3>
+<div class="button-group">
+<a href="destination.html?place=Kerala" class="explore-btn">Explore</a>
+<a href="booking.html?place=Kerala" class="book-btn">Book Tour</a>
+</div>
+</div>
+</div>
+
+<div class="place-card">
+<img src="images/destination/ooty.jpg">
+<div class="place-content">
+<h3>Ooty</h3>
+<div class="button-group">
+<a href="destination.html?place=Ooty" class="explore-btn">Explore</a>
+<a href="booking.html?place=Ooty" class="book-btn">Book Tour</a>
+</div>
+</div>
+</div>
+
+<div class="place-card">
+<img src="images/destination/kodaikanal.jpg">
+<div class="place-content">
+<h3>Kodaikanal</h3>
+<div class="button-group">
+<a href="destination.html?place=Kodaikanal" class="explore-btn">Explore</a>
+<a href="booking.html?place=Kodaikanal" class="book-btn">Book Tour</a>
+</div>
+</div>
+</div>
+
+<div class="place-card">
+<img src="images/destination/rameshwaram.jpg">
+<div class="place-content">
+<h3>Rameshwaram</h3>
+<div class="button-group">
+<a href="destination.html?place=Rameshwaram" class="explore-btn">Explore</a>
+<a href="booking.html?place=Rameshwaram" class="book-btn">Book Tour</a>
+</div>
+</div>
+</div>
+
+<!-- WEST INDIA -->
+<div class="place-card">
+<img src="images/gallery/goa1.jpg">
+<div class="place-content">
+<h3>Goa</h3>
+<div class="button-group">
+<a href="destination.html?place=Goa" class="explore-btn">Explore</a>
+<a href="booking.html?place=Goa" class="book-btn">Book Tour</a>
+</div>
+</div>
+</div>
+
+<div class="place-card">
+<img src="images/destination/mumbai.jpg">
+<div class="place-content">
+<h3>Mumbai</h3>
+<div class="button-group">
+<a href="destination.html?place=Mumbai" class="explore-btn">Explore</a>
+<a href="booking.html?place=Mumbai" class="book-btn">Book Tour</a>
+</div>
+</div>
+</div>
+
+<div class="place-card">
+<img src="images/destination/udaipur.jpg">
+<div class="place-content">
+<h3>Udaipur</h3>
+<div class="button-group">
+<a href="destination.html?place=Udaipur" class="explore-btn">Explore</a>
+<a href="booking.html?place=Udaipur" class="book-btn">Book Tour</a>
+</div>
+</div>
+</div>
+
+<!-- EAST INDIA -->
+<div class="place-card">
+<img src="images/destination/darjeeling.jpg">
+<div class="place-content">
+<h3>Darjeeling</h3>
+<div class="button-group">
+<a href="destination.html?place=Darjeeling" class="explore-btn">Explore</a>
+<a href="booking.html?place=Darjeeling" class="book-btn">Book Tour</a>
+</div>
+</div>
+</div>
+
+<div class="place-card">
+<img src="images/destination/kolkata.jpg">
+<div class="place-content">
+<h3>Kolkata</h3>
+<div class="button-group">
+<a href="destination.html?place=Kolkata" class="explore-btn">Explore</a>
+<a href="booking.html?place=Kolkata" class="book-btn">Book Tour</a>
+</div>
+</div>
+</div>
+
+<div class="place-card">
+<img src="images/destination/puri.jpg">
+<div class="place-content">
+<h3>Puri</h3>
+<div class="button-group">
+<a href="destination.html?place=Puri" class="explore-btn">Explore</a>
+<a href="booking.html?place=Puri" class="book-btn">Book Tour</a>
+</div>
+</div>
+</div>
+
+</div>
 </div>
 
 </body>

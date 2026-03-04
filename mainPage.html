@@ -5,10 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Travel Website</title>
 
-<!-- Google Font -->
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-<!-- Leaflet CSS -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 
 <style>
@@ -19,7 +16,7 @@ body {
     overflow-x: hidden;
 }
 
-/* ================= NAVBAR ================= */
+/* NAVBAR */
 .navbar {
     background: linear-gradient(90deg, #0d3b66, #1d5fa7);
     padding: 15px 60px;
@@ -36,11 +33,6 @@ body {
 .navbar img {
     height: 45px;
     cursor: pointer;
-    transition: transform 0.3s ease;
-}
-
-.navbar img:hover {
-    transform: scale(1.1);
 }
 
 .nav-links {
@@ -55,38 +47,11 @@ body {
     color: white;
     text-decoration: none;
     font-weight: 500;
-    position: relative;
-    transition: 0.3s ease;
-}
-
-.nav-links a::after {
-    content: "";
-    position: absolute;
-    width: 0%;
-    height: 2px;
-    background: #ffd166;
-    left: 0;
-    bottom: -5px;
     transition: 0.3s;
-}
-
-.nav-links a:hover::after {
-    width: 100%;
 }
 
 .nav-links a:hover {
     color: #ffd166;
-}
-
-.nav-links a:last-child {
-    background: #ff4d6d;
-    padding: 8px 18px;
-    border-radius: 25px;
-}
-
-.nav-links a:last-child:hover {
-    background: #ff1e4d;
-    color: white;
 }
 
 /* Push content below navbar */
@@ -94,7 +59,7 @@ body {
     margin-top: 110px;
 }
 
-/* ================= MAP ================= */
+/* MAP */
 #map {
     width: 88%;
     height: 500px;
@@ -104,7 +69,7 @@ body {
     display: none;
 }
 
-/* ================= SLIDESHOW ================= */
+/* SLIDESHOW */
 .slideshow-container {
     position: relative;
     max-width: 1200px;
@@ -112,6 +77,18 @@ body {
     border-radius: 25px;
     overflow: hidden;
     box-shadow: 0 25px 60px rgba(0,0,0,0.25);
+}
+
+/* BLACK OVERLAY */
+.slideshow-container::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.45);
+    z-index: 5;
 }
 
 .mySlides {
@@ -122,20 +99,9 @@ body {
     width: 100%;
     height: 520px;
     object-fit: cover;
-    transition: transform 0.8s ease;
 }
 
-.mySlides img:hover {
-    transform: scale(1.05);
-}
-
-.slideshow-container::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to bottom, rgba(0,0,0,0.4), rgba(0,0,0,0.6));
-}
-
+/* TEXT OVERLAY */
 .page-title {
     position: absolute;
     top: 45%;
@@ -144,7 +110,6 @@ body {
     text-align: center;
     color: white;
     z-index: 10;
-    animation: fadeUp 1.2s ease;
 }
 
 .page-title h1 {
@@ -166,61 +131,11 @@ body {
     text-decoration: none;
     border-radius: 30px;
     font-weight: bold;
-    transition: 0.3s ease;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+    transition: 0.3s;
 }
 
 .explore-btn:hover {
     background: white;
-    transform: translateY(-3px);
-}
-
-/* Arrows */
-.prev, .next {
-    cursor: pointer;
-    position: absolute;
-    top: 50%;
-    padding: 16px;
-    color: white;
-    font-weight: bold;
-    font-size: 22px;
-    transition: 0.3s;
-    user-select: none;
-    z-index: 10;
-}
-
-.prev { left: 15px; }
-.next { right: 15px; }
-
-.prev:hover, .next:hover {
-    color: #ffd166;
-    transform: scale(1.2);
-}
-
-/* Dots */
-.dots-container {
-    text-align: center;
-    margin-top: 20px;
-}
-
-.dot {
-    height: 13px;
-    width: 13px;
-    margin: 0 6px;
-    background-color: #cbd5e1;
-    border-radius: 50%;
-    display: inline-block;
-    cursor: pointer;
-}
-
-.active {
-    background-color: #0d3b66;
-}
-
-/* Animation */
-@keyframes fadeUp {
-    from { opacity: 0; transform: translate(-50%, -30%); }
-    to { opacity: 1; transform: translate(-50%, -50%); }
 }
 </style>
 </head>
@@ -235,12 +150,14 @@ body {
     </div>
 
     <ul class="nav-links">
-        <li><a href="#">Home</a></li>
-        <li><a href="destination.html">Destination</a></li>
-        <li><a href="gallery.html">Gallery</a></li>
-        <li><a href="feedback.html">Feedback</a></li>
-        <li><a href="index.html">Logout</a></li>
-    </ul>
+    <li><a href="#">Home</a></li>
+    <li><a href="destination.html">Destination</a></li>
+    <li><a href="gallery.html">Gallery</a></li>
+    <li><a href="tripPlanner.html">Plan Trip</a></li> 
+    <li><a href="previousPlans.php">Previous Plans</a></li>
+    <li><a href="feedback.html">Feedback</a></li>
+    <li><a href="index.html">Logout</a></li>
+</ul>
 </header>
 
 <main class="content-wrapper">
@@ -259,14 +176,6 @@ body {
     <div class="mySlides"><img src="front2.jpg"></div>
     <div class="mySlides"><img src="front1.jpg"></div>
 
-    <a class="prev" onclick="plusSlides(-1)">❮</a>
-    <a class="next" onclick="plusSlides(1)">❯</a>
-</div>
-
-<div class="dots-container">
-    <span class="dot" onclick="currentSlide(1)"></span>
-    <span class="dot" onclick="currentSlide(2)"></span>
-    <span class="dot" onclick="currentSlide(3)"></span>
 </div>
 
 </main>
@@ -276,30 +185,23 @@ body {
 <script>
 document.addEventListener("DOMContentLoaded", function () {
 
-var slideIndex = 1;
-showSlides(slideIndex);
+/* Slideshow */
+var slideIndex = 0;
+showSlides();
 
-window.plusSlides = function(n) { showSlides(slideIndex += n); }
-window.currentSlide = function(n) { showSlides(slideIndex = n); }
-
-function showSlides(n) {
+function showSlides() {
     var slides = document.getElementsByClassName("mySlides");
-    var dots = document.getElementsByClassName("dot");
-
-    if (n > slides.length) slideIndex = 1;
-    if (n < 1) slideIndex = slides.length;
-
     for (var i = 0; i < slides.length; i++)
         slides[i].style.display = "none";
 
-    for (var i = 0; i < dots.length; i++)
-        dots[i].className = dots[i].className.replace(" active", "");
+    slideIndex++;
+    if (slideIndex > slides.length) slideIndex = 1;
 
     slides[slideIndex - 1].style.display = "block";
-    dots[slideIndex - 1].className += " active";
+    setTimeout(showSlides, 3000);
 }
 
-/* Map */
+/* Map Toggle */
 var map;
 var mapVisible = false;
 
@@ -312,6 +214,7 @@ document.getElementById("logo-link").addEventListener("click", function(e) {
 
         if (!map) {
             map = L.map("map").setView([20.5937, 78.9629], 5);
+
             L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
                 attribution: "© OpenStreetMap contributors"
             }).addTo(map);

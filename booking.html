@@ -2,132 +2,68 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tour Booking</title>
+<title>Dynamic Tour Booking - OSM</title>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
 
 <style>
-
-/* ===== BACKGROUND ===== */
 body {
     margin: 0;
-    font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    font-family: Arial;
+    background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
     color: white;
 }
+h1 { text-align:center; }
 
-/* ===== NAVBAR ===== */
-.navbar {
-    display: flex;
-    justify-content: space-between;
-    padding: 15px 40px;
-    background: rgba(0,0,0,0.6);
-}
-
-.navbar a {
-    color: white;
-    text-decoration: none;
-    margin-left: 20px;
-}
-
-/* ===== TITLE ===== */
-h1 {
-    text-align: center;
-    margin-top: 30px;
-}
-
-/* ===== FORM CARD ===== */
 .container {
-    width: 400px;
-    margin: 40px auto;
-    background: rgba(255,255,255,0.1);
-    padding: 30px;
-    border-radius: 15px;
-    backdrop-filter: blur(10px);
+    width:400px;
+    margin:20px auto;
+    background:rgba(255,255,255,0.1);
+    padding:20px;
+    border-radius:15px;
 }
 
-/* ===== INPUTS ===== */
-input, select {
-    width: 100%;
-    padding: 10px;
-    margin: 12px 0;
-    border: none;
-    border-radius: 8px;
+input {
+    width:100%;
+    padding:10px;
+    margin:10px 0;
+    border:none;
+    border-radius:8px;
 }
 
-/* ===== BUTTON ===== */
 button {
-    width: 100%;
-    padding: 12px;
-    background: #ffd700;
-    border: none;
-    border-radius: 25px;
-    cursor: pointer;
-    font-weight: bold;
+    width:100%;
+    padding:12px;
+    background:#ffd700;
+    border:none;
+    border-radius:25px;
+    font-weight:bold;
+    cursor:pointer;
+    margin-top:10px;
 }
 
-button:hover {
-    background: white;
+#map {
+    height:400px;
+    width:90%;
+    margin:20px auto;
+    border-radius:15px;
 }
 
-/* ===== ROUTE DISPLAY ===== */
 .route-box {
-    margin-top: 20px;
-    padding: 15px;
-    background: rgba(0,0,0,0.4);
-    border-radius: 10px;
+    width:90%;
+    margin:20px auto;
+    padding:15px;
+    background:rgba(0,0,0,0.4);
+    border-radius:10px;
 }
-
 </style>
-
-<script>
-function showRoute() {
-
-    var start = document.getElementById("start").value;
-    var dest = document.getElementById("dest").value;
-    var result = document.getElementById("routeResult");
-
-    var routes = {
-
-        "Delhi-Agra": [
-            "Mathura",
-            "Vrindavan",
-            "Fatehpur Sikri"
-        ],
-
-        "Mumbai-Goa": [
-            "Lonavala",
-            "Pune",
-            "Ratnagiri"
-        ],
-
-        "Bangalore-Mysore": [
-            "Ramanagara",
-            "Srirangapatna"
-        ]
-    };
-
-    var key = start + "-" + dest;
-
-    if(routes[key]){
-        result.innerHTML = "<b>Famous Places on the Route:</b><br>" + routes[key].join(" ➜ ");
-    } else {
-        result.innerHTML = "No predefined famous route available.";
-    }
-}
-</script>
-
 </head>
 
 <body>
 
-<div class="navbar">
-    <a href="mainPage.html">Home</a>
-    <a href="destination.html">Destination</a>
-</div>
-
-<h1>Tour Booking</h1>
+<h1>Dynamic Tour Booking</h1>
 
 <div class="container">
-
 <form method="POST" action="booking.php">
 
 <input type="text" name="ffirst" placeholder="First Name" required>
@@ -136,29 +72,183 @@ function showRoute() {
 <input type="text" name="city" placeholder="City" required>
 <input type="text" name="fphone" placeholder="Phone" required>
 
-<label>Starting Point</label>
-<select id="start" required onchange="showRoute()">
-    <option value="">Select Start</option>
-    <option>Delhi</option>
-    <option>Mumbai</option>
-    <option>Bangalore</option>
-</select>
+<input type="text" id="start" name="fstart" placeholder="Enter Start City" required>
+<input type="text" id="end" name="fdesti" placeholder="Enter Destination City" required>
 
-<label>Destination</label>
-<select id="dest" name="fdesti" required onchange="showRoute()">
-    <option value="">Select Destination</option>
-    <option>Agra</option>
-    <option>Goa</option>
-    <option>Mysore</option>
-</select>
-
-<div class="route-box" id="routeResult"></div>
-
+<button type="button" onclick="getRoute()">Show Route & Famous Places</button>
 <button type="submit" name="submit">Book Now</button>
 
 </form>
-
 </div>
+
+<div id="map"></div>
+<div class="route-box" id="places"></div>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<script>
+
+// Initialize Map
+let map = L.map('map').setView([20.5937, 78.9629], 5);
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap contributors'
+}).addTo(map);
+
+let routeLayer;
+
+// Auto fill destination from gallery
+window.onload = function() {
+    const params = new URLSearchParams(window.location.search);
+    const place = params.get("place");
+
+    if(place){
+        document.getElementById("end").value = place;
+    }
+};
+
+// Convert city to coordinates
+async function getCoordinates(place) {
+
+    try {
+        let response = await fetch(
+            `https://nominatim.openstreetmap.org/search?format=json&q=${place}`,
+            { headers: { "Accept": "application/json" } }
+        );
+
+        if(!response.ok) throw new Error("Location service unavailable");
+
+        let data = await response.json();
+
+        if(data.length === 0){
+            throw new Error("Location not found: " + place);
+        }
+
+        return [parseFloat(data[0].lat), parseFloat(data[0].lon)];
+
+    } catch(error) {
+        alert(error.message);
+        throw error;
+    }
+}
+
+// Get Route
+async function getRoute() {
+
+    let start = document.getElementById("start").value.trim();
+    let end = document.getElementById("end").value.trim();
+
+    if(!start || !end){
+        alert("Please enter both start and destination.");
+        return;
+    }
+
+    try {
+
+        let startCoords = await getCoordinates(start);
+        let endCoords = await getCoordinates(end);
+
+        let routeURL =
+        `https://router.project-osrm.org/route/v1/driving/${startCoords[1]},${startCoords[0]};${endCoords[1]},${endCoords[0]}?overview=full&geometries=geojson`;
+
+        let routeResponse;
+
+        try {
+            routeResponse = await fetch(routeURL);
+        } catch {
+            alert("Network error. Check internet connection.");
+            return;
+        }
+
+        if(!routeResponse.ok){
+            alert("Route server not responding.");
+            return;
+        }
+
+        let routeData = await routeResponse.json();
+
+        if(!routeData.routes || routeData.routes.length === 0){
+            alert("No route found.");
+            return;
+        }
+
+        if(routeLayer) map.removeLayer(routeLayer);
+
+        routeLayer = L.geoJSON(routeData.routes[0].geometry).addTo(map);
+        map.fitBounds(routeLayer.getBounds());
+
+        await searchFamousPlaces(endCoords);
+
+    } catch(error) {
+        console.error(error);
+    }
+}
+
+// Search Famous Places near destination
+async function searchFamousPlaces(coords) {
+
+    let placesBox = document.getElementById("places");
+    placesBox.innerHTML = "<b>Famous Places Near Destination:</b><br>";
+
+    let lat = coords[0];
+    let lon = coords[1];
+
+    let query = `
+    [out:json][timeout:25];
+    (
+      node(around:50000,${lat},${lon})["tourism"];
+      node(around:50000,${lat},${lon})["historic"];
+      node(around:50000,${lat},${lon})["natural"];
+    );
+    out;
+    `;
+
+    try {
+
+        let response = await fetch(
+            "https://overpass-api.de/api/interpreter",
+            {
+                method: "POST",
+                headers: { "Content-Type": "text/plain" },
+                body: query
+            }
+        );
+
+        if(!response.ok){
+            placesBox.innerHTML += "Tourist data unavailable.";
+            return;
+        }
+
+        let text = await response.text();
+
+        if(text.startsWith("<?xml")){
+            placesBox.innerHTML += "Tourist server busy. Try again.";
+            return;
+        }
+
+        let data = JSON.parse(text);
+
+        if(data.elements && data.elements.length > 0){
+
+            let count = 0;
+
+            data.elements.forEach(place => {
+                if(place.tags && place.tags.name && count < 10){
+                    placesBox.innerHTML += "➜ " + place.tags.name + "<br>";
+                    count++;
+                }
+            });
+
+        } else {
+            placesBox.innerHTML += "No major attractions found.";
+        }
+
+    } catch(error) {
+        placesBox.innerHTML += "Unable to load attractions.";
+    }
+}
+
+</script>
 
 </body>
 </html>

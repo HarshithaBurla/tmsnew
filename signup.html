@@ -1,45 +1,155 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title> Sign Up Form </title>
-  <meta name="viewport" content="width= device-width, initial-scale=1.0">
-  <link rel="stylesheet" type="text/css" href="css/signup.css">
+  <title>Sign Up</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #1d5fa7, #0d3b66);
+    }
+
+    .signup-box {
+      width: 400px;
+      padding: 40px;
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(15px);
+      border-radius: 20px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+      text-align: center;
+      color: white;
+    }
+
+    .signup-box h1 {
+      margin-bottom: 25px;
+      font-weight: 600;
+      letter-spacing: 1px;
+    }
+
+    .textbox {
+      margin-bottom: 18px;
+    }
+
+    .textbox input {
+      width: 100%;
+      padding: 12px;
+      border-radius: 25px;
+      border: none;
+      outline: none;
+      font-size: 14px;
+      transition: 0.3s;
+    }
+
+    .textbox input:focus {
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
+    }
+
+    .btn {
+      width: 100%;
+      padding: 12px;
+      border-radius: 25px;
+      border: none;
+      background: #ffd166;
+      color: #0d3b66;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s;
+      margin-top: 10px;
+    }
+
+    .btn:hover {
+      background: white;
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    }
+
+    .signin-link {
+      margin-top: 18px;
+      display: block;
+      color: white;
+      text-decoration: none;
+      font-size: 14px;
+      transition: 0.3s;
+    }
+
+    .signin-link:hover {
+      color: #ffd166;
+    }
+
+    @media(max-width: 450px) {
+      .signup-box {
+        width: 90%;
+        padding: 30px;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-  <form from="myForm" action ="save.php" method="POST">
+  <form name="myForm" action="save.php" method="POST">
+    <div class="signup-box">
 
-    <div class="login-box">
-
-      <h1> Sign Up </h1>
+      <h1>Sign Up</h1>
 
       <div class="textbox">
-        <input type="text" placeholder="Username" id="fname" name="fname" value="" required>  
+        <input type="text" placeholder="Username" name="fname" required>
       </div>
 
       <div class="textbox">
-        <input type="password" placeholder="Password" id="password" name="password" value="" maxlength="8" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="password must cantain at least one number and one uppper case and one lowercase letter and 8 characters" required>
+        <input type="password"
+               placeholder="Password"
+               name="password"
+               maxlength="8"
+               pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+               title="Password must contain at least one number, one uppercase, one lowercase letter and 8 characters"
+               required>
       </div>
 
       <div class="textbox">
-        <input type="text" placeholder="Email" id="email" name="email" value="" required pattern="[a-z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-z0-9-]+.[a-z]{2,4}" title="Invalid Email">
+        <input type="email"
+               placeholder="Email"
+               name="email"
+               pattern="[a-z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-z0-9-]+\.[a-z]{2,4}"
+               title="Enter a valid email"
+               required>
       </div>
 
       <div class="textbox">
-        <input type="text" placeholder="City" id="city" name="city" value="" required>
+        <input type="text" placeholder="City" name="city" required>
       </div>
 
       <div class="textbox">
-        <input type="text" placeholder="Phone" id="phone" name="phone" value="" required onkeypress="return /[0-9]/i.test(event.key)" maxlength="10" pattern="([0-9]){10,}">
+        <input type="text"
+               placeholder="Phone"
+               name="phone"
+               maxlength="10"
+               pattern="[0-9]{10}"
+               onkeypress="return /[0-9]/i.test(event.key)"
+               required>
       </div>
 
-      <input class="btn" type="submit" name="" value="Sign Up"> <br> <br>
+      <input class="btn" type="submit" value="Sign Up">
 
-      <center> <a href="index.html"> Already have an account ? </a> <center>
+      <a class="signin-link" href="index.html">
+        Already have an account? Sign In
+      </a>
 
     </div>
-    
   </form>
 
 </body>

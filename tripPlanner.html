@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Smart Trip Planner</title>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<style>
+body{
+    margin:0;
+    font-family: Arial;
+    background: linear-gradient(to right,#1e3c72,#2a5298);
+    color:white;
+}
+.container{
+    text-align:center;
+    padding:30px;
+}
+input{
+    padding:10px;
+    margin:8px;
+    width:250px;
+    border:none;
+    border-radius:5px;
+}
+button{
+    padding:12px 20px;
+    background:#ff9800;
+    color:white;
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
+    margin:5px;
+}
+button:hover{
+    background:#e68900;
+}
+#map{
+    height:450px;
+    margin:20px;
+    border-radius:10px;
+}
+#result{
+    background:white;
+    color:black;
+    margin:20px;
+    padding:20px;
+    border-radius:12px;
+}
+.plan-card{
+    background:#f5f5f5;
+    padding:15px;
+    margin-bottom:15px;
+    border-radius:8px;
+}
+.summary-box{
+    background:#e3f2fd;
+    padding:15px;
+    border-radius:8px;
+    margin-top:15px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+<h2>Smart Trip Planner</h2>
+
+<input type="text" id="name" placeholder="Your Name"><br>
+<input type="email" id="email" placeholder="Email"><br>
+<input type="text" id="start" placeholder="Start City"><br>
+<input type="text" id="destination" placeholder="Destination City"><br>
+<input type="number" id="budget" placeholder="Total Budget (₹)"><br>
+<input type="number" id="days" placeholder="Number of Days"><br>
+
+<button onclick="planTrip()">Plan My Trip</button>
+<button onclick="saveTrip()">Save Trip</button>
+<button onclick="downloadPDF()">Download PDF</button>
+</div>
+
+<div id="map"></div>
+<div id="result"></div>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<script>
+
+let map = L.map('map').setView([20.5937,78.9629],5);
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+ attribution:'© OpenStreetMap'
+}).addTo(map);
+
+let routeLine;
+let markers=[];
+let currentTripData=null;
+
+async function planTrip(){
+
+let name=document.getElementById("name").value;
+let email=document.getElementById("email").value;
+let start=document.getElementById("start").value;
+let dest=document.getElementById("destination").value;
+let budget=parseInt(document.getElementById("budget").value);
+let days=parseInt(document.getElementById("days").value);
+
+if(!name || !email || !start || !dest || !budget || !days){
+ alert("Please fill all fields");
+ return;
+}
+
+document.getElementById("result").innerHTML="<h3>Generating Smart Trip Plan...</h3>";
+
+try{
+
+// Get Coordinates
+let sData=await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${start}`).then(r=>r.json());
+let dData=await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${dest}`).then(r=>r.json());
+
+if(!sData.length || !dData.length){
+ alert("Invalid city name");
+ return;
+}
+
+let sLat=parseFloat(sData[0].lat);
+let sLon=parseFloat(sData[0].lon);
+let dLat=parseFloat(dData[0].lat);
+let dLon=parseFloat(dData[0].lon);
+
+// Get Route
+let routeData=await fetch(
+`https://router.project-osrm.org/route/v1/driving/${sLon},${sLat};${dLon},${dLat}?overview=full&geometries=geojson`
+).then(r=>r.json());
+
+if(!routeData.routes){
+ alert("Route not found");
+ return;
+}
+
+let coords=routeData.routes[0].geometry.coordinates;
+let latLngs=coords.map(c=>[c[1],c[0]]);
+
+if(routeLine) map.removeLayer(routeLine);
+markers.forEach(m=>map.removeLayer(m));
+markers=[];
+
+routeLine=L.polyline(latLngs,{color:'blue',weight:5}).addTo(map);
+map.fitBounds(routeLine.getBounds());
+
+// Mid Stops
+let stopPoints=[
+ latLngs[Math.floor(latLngs.length*0.25)],
+ latLngs[Math.floor(latLngs.length*0.5)],
+ latLngs[Math.floor(latLngs.length*0.75)]
+];
+
+let hotelBudget = budget * 0.5;
+let transportBudget = budget * 0.3;
+let activityBudget = budget * 0.2;
+
+let hotelPerDay = Math.floor(hotelBudget / days);
+let daysPerStop = Math.floor(days / 3);
+
+let totalHotelCost=0;
+let totalTransportCost=0;
+
+let resultHTML=`<h2 style="color:#1e3c72;">Trip Plan for ${name}</h2><hr>`;
+
+for(let i=0;i<stopPoints.length;i++){
+
+ let lat=stopPoints[i][0];
+ let lon=stopPoints[i][1];
+
+ let stayDays=daysPerStop;
+ let stayCost=stayDays*hotelPerDay;
+ totalHotelCost+=stayCost;
+
+ let transportMode=(budget>80000)?"Flight":"Train";
+ let transportCost=(transportMode=="Flight")?4000:1500;
+ totalTransportCost+=transportCost;
+
+ // Reverse Geocode to get city name
+ let placeName="Route Stop";
+ try{
+   let geo=await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`)
+   .then(r=>r.json());
+
+   placeName = geo.address.city || geo.address.town || geo.address.village || "Route Stop";
+ }catch{}
+
+ let marker=L.marker([lat,lon]).addTo(map).bindPopup(placeName);
+ markers.push(marker);
+
+ // Famous places
+ let placesList="<ul>";
+ try{
+   let query=`[out:json];
+   node["tourism"](around:15000,${lat},${lon});
+   out 5;`;
+
+   let data=await fetch("https://overpass-api.de/api/interpreter",{
+     method:"POST",
+     body:query
+   }).then(r=>r.json());
+
+   if(data.elements.length>0){
+     data.elements.forEach(p=>{
+       if(p.tags && p.tags.name){
+         placesList+=`<li>${p.tags.name}</li>`;
+       }
+     });
+   }else{
+     placesList+="<li>Explore local sightseeing spots</li>";
+   }
+
+ }catch{
+   placesList+="<li>Explore nearby attractions</li>";
+ }
+
+ placesList+="</ul>";
+
+ resultHTML+=`
+ <div class="plan-card">
+ <h4>Stop ${i+1} - ${placeName}</h4>
+ <p><b>Stay:</b> ${stayDays} Days</p>
+ <p><b>Famous Places:</b></p>
+ ${placesList}
+ <p><b>Transport:</b> ${transportMode}</p>
+ <p><b>Hotel Budget:</b> ₹${stayCost}</p>
+ </div>
+ `;
+}
+
+let totalCost=totalHotelCost+totalTransportCost+activityBudget;
+
+resultHTML+=`
+<div class="summary-box">
+<h3>Total Hotel Cost: ₹${totalHotelCost}</h3>
+<h3>Total Transport Cost: ₹${totalTransportCost}</h3>
+<h2>Estimated Total Trip Cost: ₹${totalCost}</h2>
+</div>
+`;
+
+document.getElementById("result").innerHTML=resultHTML;
+
+currentTripData={
+ name,email,start,destination:dest,
+ budget,days,totalCost,
+ planDetails:resultHTML
+};
+
+}catch(e){
+ document.getElementById("result").innerHTML="<h3>Error generating trip. Check internet.</h3>";
+}
+}
+
+// SAVE TO DATABASE
+function saveTrip(){
+
+if(!currentTripData){
+ alert("Generate trip first");
+ return;
+}
+
+fetch("saveTrip.php",{
+ method:"POST",
+ headers:{"Content-Type":"application/x-www-form-urlencoded"},
+ body:
+ "name="+encodeURIComponent(currentTripData.name)+
+ "&email="+encodeURIComponent(currentTripData.email)+
+ "&start="+encodeURIComponent(currentTripData.start)+
+ "&destination="+encodeURIComponent(currentTripData.destination)+
+ "&budget="+currentTripData.budget+
+ "&days="+currentTripData.days+
+ "&totalCost="+currentTripData.totalCost+
+ "&planDetails="+encodeURIComponent(currentTripData.planDetails)
+})
+.then(res=>res.text())
+.then(data=>{
+   alert("SERVER RESPONSE:\n" + data);
+});
+}
+
+// DOWNLOAD PDF
+function downloadPDF(){
+
+if(!currentTripData){
+ alert("Generate trip first");
+ return;
+}
+
+const { jsPDF } = window.jspdf;
+const doc = new jsPDF();
+
+doc.text("Smart Trip Planner",20,20);
+doc.text(document.getElementById("result").innerText,20,30,{maxWidth:170});
+
+doc.save("TripPlan.pdf");
+}
+
+</script>
+</body>
+</html>

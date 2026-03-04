@@ -1,34 +1,127 @@
 <!DOCTYPE html>
-<html lang="entered">
+<html lang="en">
 
 <head>
-  <title> Sign In Form </title>
-  <meta name="viewport" content="width= device-width, initial-scale=1.0">
-  <link rel="stylesheet" type="text/css" href="css/signin.css">
+  <title>Sign In</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #0d3b66, #1d5fa7);
+    }
+
+    .login-box {
+      width: 360px;
+      padding: 40px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(15px);
+      border-radius: 20px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+      text-align: center;
+      color: white;
+    }
+
+    .login-box h1 {
+      margin-bottom: 30px;
+      font-weight: 600;
+      letter-spacing: 1px;
+    }
+
+    .textbox {
+      margin-bottom: 20px;
+    }
+
+    .textbox input {
+      width: 100%;
+      padding: 12px;
+      border-radius: 25px;
+      border: none;
+      outline: none;
+      font-size: 14px;
+      transition: 0.3s;
+    }
+
+    .textbox input:focus {
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
+    }
+
+    .btn {
+      width: 100%;
+      padding: 12px;
+      border-radius: 25px;
+      border: none;
+      background: #ffd166;
+      color: #0d3b66;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s;
+      margin-top: 10px;
+    }
+
+    .btn:hover {
+      background: white;
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    }
+
+    .signup-link {
+      margin-top: 20px;
+      display: block;
+      color: white;
+      text-decoration: none;
+      font-size: 14px;
+      transition: 0.3s;
+    }
+
+    .signup-link:hover {
+      color: #ffd166;
+    }
+
+    /* Responsive */
+    @media(max-width: 400px) {
+      .login-box {
+        width: 90%;
+        padding: 30px;
+      }
+    }
+  </style>
 </head>
-  <body>
-    <form name="myForm" action ="signin.php" method="POST">
 
-      <div class="login-box">
+<body>
 
-        <h1> Sign In </h1>
+  <form name="myForm" action="signin.php" method="POST">
+    <div class="login-box">
+      <h1>Sign In</h1>
 
-        <div class="textbox">
-           
-          <input type="text" placeholder="Username" name="user" value="" required> 
-
-        </div>
-        <div class="textbox">
-          <input type="password" placeholder="Password" name="pass" value="" maxlength="8" required>
-        </div>
-          
-        <input class="btn" type="submit" name="submit" value="Sign in"> 
-        <center> <a style="color: white;" href="signup.html"> Don't have an account ? </a> <center>
+      <div class="textbox">
+        <input type="text" placeholder="Username" name="user" required>
       </div>
 
-    </form>
+      <div class="textbox">
+        <input type="password" placeholder="Password" name="pass" maxlength="8" required>
+      </div>
 
-  </body>
+      <input class="btn" type="submit" name="submit" value="Sign In">
+
+      <a class="signup-link" href="signup.html">
+        Don't have an account? Sign Up
+      </a>
+    </div>
+  </form>
+
+</body>
 </html>
-
-
